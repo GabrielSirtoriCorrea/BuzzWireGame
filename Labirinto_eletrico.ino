@@ -1,6 +1,6 @@
 #include <PushButton.h>
 
-#define GameRead A5
+#define GameRead 13
 
 #define pinA 6 //CENTRAL HORIZONTAL
 #define pinB 7 //LATERAL ESQUERDO VERTICAL DE CIMA
@@ -39,7 +39,7 @@ void setup() {
 
   pinMode(buzzer, OUTPUT);
 
-  pinMode(GameRead, INPUT);
+  pinMode(GameRead, INPUT_PULLUP);
 
   digitalWrite(led, HIGH);
 
@@ -51,8 +51,8 @@ void loop() {
   btnPlus.button_loop();
   btnStart.button_loop();
 
-  //trying = digitalRead(GameRead);
-  //Serial.println(trying);
+  trying = digitalRead(GameRead);
+  Serial.println(trying);
 
   if(btnPlus.pressed()){
     trysNumber++;  
@@ -62,14 +62,18 @@ void loop() {
 
   if(btnStart.pressed()){
     while(true){
-      trying = analogRead(GameRead);
+      trying = digitalRead(GameRead);
       Serial.println(trying);
-      if(trying == 1023){
-        //tone(buzzer, 200, 300);
+      if(trying == 0){
+        tone(buzzer, 400, 300);
         trysNumber--;
+        displayNumbers(trysNumber);
         if(trysNumber == 0){
+          tone(buzzer, 800, 10000);
+          delay(10000);
           break;
         }
+        delay(500);
       }
     }
   }
