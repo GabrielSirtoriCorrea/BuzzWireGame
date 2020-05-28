@@ -1,4 +1,4 @@
 import os 
 
-test = os.system('git add -A')
+test = os.system('git pull origin master')
 print(test)
